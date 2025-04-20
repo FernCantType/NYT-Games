@@ -94,17 +94,16 @@ public class SpellingBeeSolver {
      * @return the same list but with the words sorted 
      */
     private ArrayList<String> sort(ArrayList<String> list) {
-        //Don't even document, just change the sorting methodology later. Slelection short is bad
-        for (int i = 0; i < list.size(); i++) {
-            int greatestIndex = i;
-            for (int p = i + 1; p < list.size(); p++) {
-                if(findPoints(list.get(p)) < findPoints(list.get(greatestIndex))) {
-                    greatestIndex = p;
-                }
+        //Insertion Sort
+        for (int i = 1; i < list.size(); i++) {
+            String key = list.get(i);
+            int j = i - 1;
+    
+            while (j >= 0 && findPoints(list.get(j)) > findPoints(key)) {
+                list.set(j + 1, list.get(j));
+                j--;
             }
-            String change = list.get(i); 
-            list.set(i, list.get(greatestIndex)); 
-            list.set(greatestIndex, change);
+            list.set(j + 1, key);
         }
         return list;
     }
