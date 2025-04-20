@@ -19,13 +19,15 @@ public class SpellingBeeSolver {
      * 
      * @param letters the letters that are allowed in the game
      */
-    SpellingBeeSolver(char[] letters, char specialLetter) {
+    SpellingBeeSolver(char[] letters, char specL) {
         try{
             sc = new Scanner(new File("words.txt"));
             this.letters = letters;
+            this.specL = specL;
+
             totalPoints = 0;
-            specL = specialLetter;
             playerRank = "Beginner";
+
             words = new ArrayList<>();
             addWords();
             words = sort(words);
@@ -44,18 +46,26 @@ public class SpellingBeeSolver {
         for(char ch : letters) {
             avaChars.add(ch);
         }
+
         while(sc.hasNext()) {
             String line = sc.next();
             boolean isValid = true;
+
+             //Remove words that don't have the special character
             if(!avaChars.contains(specL)) {
                 isValid = false;
-            }
-            for (char ch : line.toCharArray()) {
-                if (!avaChars.contains(ch)) {
-                    isValid = false;
-                    break;
+            } else {
+
+                //Now remove the words that have the special character but not the other characters
+                for (char ch : line.toCharArray()) {
+                    if (!avaChars.contains(ch)) {
+                        isValid = false;
+                        break;
+                    }
                 }
             }
+
+            //Add to the words list
             if (isValid) {
                 words.add(line);
             }
@@ -83,6 +93,7 @@ public class SpellingBeeSolver {
      * @return the same list but with the words sorted 
      */
     private ArrayList<String> sort(ArrayList<String> list) {
+        //Don't even document, just change the sorting methodology later. Slelection short is bad
         for (int i = 0; i < list.size(); i++) {
             int greatestIndex = i;
             for (int p = i + 1; p < list.size(); p++) {
@@ -111,15 +122,20 @@ public class SpellingBeeSolver {
      */
     private void nextRound(ArrayList<String> list) {
         printWords(list);
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Print out the word of your choosing. To close, type nothing: ");
-        String wordChoice = scanner.nextLine().toUpperCase();
+        String wordChoice = sc.nextLine().toUpperCase();
+
+        //Close
         if(wordChoice.equals("")) {
-            scanner.close();
+            sc.close();
             System.exit(0);
-        }
+        } //Add logic to force rechoice if not one of the selected words
+
+        //Remove word and find total points
         list.remove(wordChoice);
         totalPoints += findPoints(wordChoice);
+
+        //Find rank, print out whether promoted or not
         String oldRank = playerRank;
         findNewRank();
         if(! oldRank.equals(playerRank)) {
@@ -128,10 +144,12 @@ public class SpellingBeeSolver {
         else{
             System.out.println("You are still a " + playerRank);
         }
+
+        //Go to next round
         nextRound(list);
     }
     /**
-     * Finds the rank of the player based off the rubric on spelling bee nyt
+     * Finds the rank of the player based off the rubric on spelling bee nyt. Useless for now
      */
     private void findNewRank() {
         if(totalPoints >= 162) {
@@ -160,12 +178,12 @@ public class SpellingBeeSolver {
         }
     }
     /**
-     * Main arg
+     * Main method to allow you to input the characters of the game and then outputs the words
      */
     public static void main(String[] args) {
         char specialLetter = 'M';
         char[] letters = new char[] {specialLetter,
-                                    'A', 'T', 'P', 'O', 'E', 'L'};
+            'A', 'T', 'P', 'O', 'E', 'L'};
         @SuppressWarnings("unused")
         SpellingBeeSolver sbs = new SpellingBeeSolver(letters, specialLetter);
     }
