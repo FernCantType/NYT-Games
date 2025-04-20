@@ -5,6 +5,7 @@ import java.io.*;
  * 
  * @author Lorenzo Canali
  * @version 11/11/2024
+ * @updated 4/20/2025
  */
 public class SpellingBeeSolver {
     private char[] letters;
