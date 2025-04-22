@@ -6,7 +6,7 @@ import java.util.*;
  * @author Lorenzo Canali
  * @version 11/10/2024
  */
-public class LetterBoxSolver {
+public class LetterBoxSolver extends NYTGames {
     private char[][] dimension;
     private ArrayList<String> words;
     private Scanner sc;
@@ -105,7 +105,7 @@ public class LetterBoxSolver {
      * @param list the list of words to be sorted
      * @return the same list but with the words sorted 
      */
-    private ArrayList<String> sort(ArrayList<String> list) {
+    protected ArrayList<String> sort(ArrayList<String> list) {
         for (int i = 0; i < list.size(); i++) {
             int greatestIndex = i;
             for (int p = i + 1; p < list.size(); p++) {

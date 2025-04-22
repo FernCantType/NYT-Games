@@ -7,7 +7,7 @@ import java.io.*;
  * @version 11/11/2024
  * @updated 4/20/2025
  */
-public class SpellingBeeSolver {
+public class SpellingBeeSolver extends NYTGames {
     private char[] letters;
     private char specL;
     private Scanner sc;
@@ -93,7 +93,7 @@ public class SpellingBeeSolver {
      * @param list the list of words to be sorted
      * @return the same list but with the words sorted 
      */
-    private ArrayList<String> sort(ArrayList<String> list) {
+    protected ArrayList<String> sort(ArrayList<String> list) {
         //Insertion Sort
         for (int i = 1; i < list.size(); i++) {
             String key = list.get(i);
