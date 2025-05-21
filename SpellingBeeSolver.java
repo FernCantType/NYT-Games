@@ -8,7 +8,7 @@ import java.io.*;
  * @updated 4/20/2025
  */
 public class SpellingBeeSolver extends NYTGames {
-    private char[] letters;
+    private ArrayList<Character> letters;
     private char specL;
     private Scanner sc;
     private ArrayList<String> words;
@@ -20,7 +20,7 @@ public class SpellingBeeSolver extends NYTGames {
      * 
      * @param letters the letters that are allowed in the game
      */
-    SpellingBeeSolver(char[] letters, char specL) {
+    SpellingBeeSolver(ArrayList<Character> letters, char specL) {
         try{
             sc = new Scanner(new File("words.txt"));
             this.letters = letters;
@@ -43,23 +43,19 @@ public class SpellingBeeSolver extends NYTGames {
      * Add the words to the set that only have the letters allowed inside them
      */
     private void addWords() {
-        Set<Character> avaChars = new HashSet<>();
-        for(char ch : letters) {
-            avaChars.add(ch);
-        }
-
+        //Scanner
         while(sc.hasNext()) {
             String line = sc.next();
             boolean isValid = true;
 
              //Remove words that don't have the special character
-            if(!avaChars.contains(specL)) {
+            if(line.indexOf(specL) == -1) {
                 isValid = false;
             } else {
 
                 //Now remove the words that have the special character but not the other characters
                 for (char ch : line.toCharArray()) {
-                    if (!avaChars.contains(ch)) {
+                    if (!letters.contains(ch)) {
                         isValid = false;
                         break;
                     }
@@ -181,9 +177,14 @@ public class SpellingBeeSolver extends NYTGames {
      * Main method to allow you to input the characters of the game and then outputs the words
      */
     public static void main(String[] args) {
-        char specialLetter = 'M';
-        char[] letters = new char[] {specialLetter,
-            'A', 'T', 'P', 'O', 'E', 'L'};
+        char specialLetter = 'Y';
+
+        Character[] temp4Ease = new Character[] {specialLetter,
+
+            'I', 'A', 'O', 'N', 'T', 'L'
+        
+        };
+        ArrayList<Character> letters = new ArrayList<>(Arrays.asList(temp4Ease));
         @SuppressWarnings("unused")
         SpellingBeeSolver sbs = new SpellingBeeSolver(letters, specialLetter);
     }

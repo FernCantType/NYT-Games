@@ -204,10 +204,10 @@ public class LetterBoxSolver extends NYTGames {
      * @args I don't know what it does it is just part of the unique syntax of a main method
      */
     public static void main(String[] args) {
-        char[] row1 = new char[] {'T','V','M'};
-        char[] row2 = new char[] {'D','U','L'};
-        char[] row3 = new char[] {'E','I','B'};
-        char[] row4 = new char[] {'Y','J','N'};
+        char[] row1 = new char[] {'X','I','G'};
+        char[] row2 = new char[] {'T','V','C'};
+        char[] row3 = new char[] {'U','N','A'};
+        char[] row4 = new char[] {'R','J','E'};
         @SuppressWarnings("unused") //I don't know what this does VS just told me to add it. I think it 
         LetterBoxSolver lbs = new LetterBoxSolver(row1, row2, row3, row4);
     }
