@@ -11,6 +11,7 @@ public class LetterBoxSolver extends NYTGames {
     private ArrayList<String> words;
     private Scanner sc;
     private ArrayList<Character> charsLeft;
+    
     /**
      * Constructs a LetterBoxSolver object. It also fills all the fields through local intialization and 
      * internal method calls. It then starts the recursive nextRound() method.
@@ -48,15 +49,15 @@ public class LetterBoxSolver extends NYTGames {
     private void addWords() {
         Set<Character> avaChars = new HashSet<>();
         for (char[] chars : dimension) {
-            for (char ch : chars) {
-                avaChars.add(ch);  
-            }
+            for (char ch : chars) avaChars.add(ch);  
         }
+
         while (sc.hasNext()) {
             String line = sc.next();
             boolean isValid = true;
+
             for (char ch : line.toCharArray()) {
-                if (!avaChars.contains(ch)) {
+                if (! avaChars.contains(ch)) {
                     isValid = false;
                     break;
                 }
@@ -68,14 +69,17 @@ public class LetterBoxSolver extends NYTGames {
     }
     
     /**
-     * Finds the words that have consecutive letters and removes them
+     * Finds the words that have consecutive letters and removes them. Uses whatArray method to find the side each character is one to make sure
+     * it is valid
      */
     private void refineWords() {
         Iterator<String> it = words.iterator();
+
         while (it.hasNext()) {
             String word = it.next();
+
             for (int i = 0; i < word.length() - 1; i++) {
-                if (whatArray(word, i) == whatArray(word, i + 1)) {
+                if (whatArray(word.charAt(i)) == whatArray(word.charAt(i + 1))) {
                     it.remove();
                     break;
                 }
@@ -83,24 +87,26 @@ public class LetterBoxSolver extends NYTGames {
         }
     }
     /**
-     * Finds the array of the letter of the word and returns the array that it is in
+     * Finds the array of the letter of the word and returns the array that it is in. Works like a contain method but outputs the side.
      * 
-     * @return the index of the array it is found in
-     * @param word the word to search
-     * @param indexOfChar the index of the char you want to find
+     * @return the index of the side it is found in or -1 if not found
+     * @param character the character to find the side it is on
      */
-    private int whatArray(String word, int indexOfChar) {
+    private int whatArray(char character) {
+        //4 sides
         for (int p = 0; p < dimension.length; p++) {
+            //3 characters per side
             for (int k = 0; k < dimension[p].length; k++) {
-                if (word.charAt(indexOfChar) == dimension[p][k]) {
+
+                if (character == dimension[p][k]) {
                     return p;  
                 }
             }
         }
-        return -1; 
+        return -1; //Not in word
     }
     /**
-     * Sorts the words in the list by how many special characters each word has
+     * Sorts the words in the list by how many special characters each word has. Change to Insertion later, currently bubble
      * 
      * @param list the list of words to be sorted
      * @return the same list but with the words sorted 
@@ -108,30 +114,34 @@ public class LetterBoxSolver extends NYTGames {
     protected ArrayList<String> sort(ArrayList<String> list) {
         for (int i = 0; i < list.size(); i++) {
             int greatestIndex = i;
+
             for (int p = i + 1; p < list.size(); p++) {
                 if(numOfSpecChars(list.get(p)) < numOfSpecChars(list.get(greatestIndex))) {
                     greatestIndex = p;
                 }
             }
-            String change = list.get(i); 
+
+            String temp = list.get(i); 
             list.set(i, list.get(greatestIndex)); 
-            list.set(greatestIndex, change);
+            list.set(greatestIndex, temp);
         }
         return list;
     }
     /**
-     * Find words that fit the criteria of the next word
+     * Find words that fit the criteria of the next word after a word is played
      * 
      * @param word
      * @return the words that fit the criteria
      */
     private ArrayList<String> nextWords(String sWord) {
         ArrayList<String> validWords = new ArrayList<>();
+
         for(String word : words) {
             if(word.charAt(0) == sWord.charAt(sWord.length() -1)) {
                 validWords.add(word);
             }
         }
+
         validWords = sort(validWords);
         return validWords;
     }
@@ -147,6 +157,7 @@ public class LetterBoxSolver extends NYTGames {
         System.out.println("Print out the word of your choosing: ");
         String wordChoice = scanner.nextLine().toUpperCase();
         removeChars(wordChoice);
+
         if(charsLeft.size() == 0) {
             scanner.close();
             System.out.println("YOU WON GOOD JOB");
@@ -156,32 +167,37 @@ public class LetterBoxSolver extends NYTGames {
         }
     }
     /**
-     * Removes all the character from the needed character spot
+     * Removes all the character in the last plauyed word from the needed character list
      * 
      * @param word the word that is being played so the characters of that word need to be removed
      */
     private void removeChars(String word) {
         Iterator<Character> it = charsLeft.iterator();
+
         while(it.hasNext()) {
             char specC = it.next();
+
             if(word.indexOf(specC) >= 0) {
                 it.remove();
             }
         }
     }
     /**
-     * Amount of new characters hit with the word
+     * Amount of new characters hit with the word. Flawed, it counts the same character as two distinct new characters, fix this logic by using
+     * a temp list that is a clone of charsLeft so you can remove bad words
      * 
      * @param word the word to see how many characters are hit
      * @return the number of special characters inside
      */
     private int numOfSpecChars(String word) {
         int numOfSpecChars = 0;
+
         for(char ch : charsLeft) {
             if(word.indexOf(ch) >= 0) {
                 numOfSpecChars++;
             }
         }
+
         return numOfSpecChars;
     }
     /**
@@ -193,10 +209,7 @@ public class LetterBoxSolver extends NYTGames {
         if(words.isEmpty()) {
             System.out.println("YOU LOST BY TECHNICALITY; NO WORDS APPLICABLE!");
             System.exit(0);
-        }
-        else {            
-            System.out.println(words);
-        }
+        } else System.out.println(words);
     }
     /**
      * Main method to run
@@ -204,10 +217,10 @@ public class LetterBoxSolver extends NYTGames {
      * @args I don't know what it does it is just part of the unique syntax of a main method
      */
     public static void main(String[] args) {
-        char[] row1 = new char[] {'X','I','G'};
-        char[] row2 = new char[] {'T','V','C'};
-        char[] row3 = new char[] {'U','N','A'};
-        char[] row4 = new char[] {'R','J','E'};
+        char[] row1 = new char[] {'W','G','N'};
+        char[] row2 = new char[] {'H','A','I'};
+        char[] row3 = new char[] {'K','L','O'};
+        char[] row4 = new char[] {'E','T','B'};
         @SuppressWarnings("unused") //I don't know what this does VS just told me to add it. I think it 
         LetterBoxSolver lbs = new LetterBoxSolver(row1, row2, row3, row4);
     }

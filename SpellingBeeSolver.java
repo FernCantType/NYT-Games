@@ -140,8 +140,7 @@ public class SpellingBeeSolver extends NYTGames {
         else{
             System.out.println("You are still a " + playerRank);
         }
-
-        //Go to next round
+        
         nextRound(list);
     }
     /**
