@@ -8,22 +8,9 @@ import java.util.*;
  */
 public class LetterBoxSolver extends NYTGames {
     private char[][] dimension;
-    private ArrayList<String> words;
     private Scanner sc;
-    private ArrayList<Character> charsLeft;
-    /*
-     * New fields or changed fields to make the Tree Idea work
-     * actually needed:
-     * private Arraylist<ArrayList<Character>> charsLeft;   //Must have the same indexes as the tree to make work and should expand gradually when
-     *                                                      //tree exapnds. Actually I dont think that'll work so instead we can just note
-     *                                                      //the amount of chars locally when using the recursion and making each trees branch
-     * private ArrayList<NaryTree> trees; //All the trees in one data structure
-     * 
-     * small optmizations:
-     * private HashMap<String, ArrayList<String> table; //Gonna be used to not have to look thorugh all words every time
-     */
-
-
+    private ArrayList<NaryTree> trees;
+    private HashMap<String, ArrayList<String>> table;
     /**
      * Constructs a LetterBoxSolver object. It also fills all the fields through local intialization and 
      * internal method calls. It then starts the recursive nextRound() method.
